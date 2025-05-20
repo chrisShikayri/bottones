@@ -8,9 +8,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Botones Deslizables',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: 'App con Drawer y Botones Deslizables',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[100],
+      ),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -26,6 +30,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> _labels = [
     'Inicio',
@@ -52,15 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   final List<Widget> _pages = [
-    Center(child: Text('Inicio', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Pedidos', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Favoritos', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Cuenta', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Más', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Configuración', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Ayuda', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Historial', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Promociones', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Inicio', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Pedidos', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Favoritos', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Cuenta', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Más Opciones', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Configuración', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Ayuda', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Historial', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Promociones', style: TextStyle(fontSize: 24))),
   ];
 
   void _onButtonTapped(int index) {
@@ -68,10 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
     });
     
-    // Opcional: Auto-scroll para hacer visible el botón seleccionado
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
-        (index * 100).toDouble(), // Ajusta este valor según el ancho de tus botones
+        (index * 100).toDouble(),
         duration: Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -113,10 +117,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Botones Deslizables'),
+        title: Text(_labels[_selectedIndex]),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
       ),
+      drawer: _buildDrawer(context),
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
         height: 80,
@@ -142,6 +158,98 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person, size: 40, color: Colors.blue),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'christopher-jimenez Demo',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'christopher-D.Jimenez@demo.com',
+                  style: TextStyle(
+                    // ignore: deprecated_member_use
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home, color: Colors.blue),
+            title: Text('Inicio'),
+            onTap: () {
+              _onButtonTapped(0);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.shopping_cart, color: Colors.red),
+            title: Text('Pedidos'),
+            onTap: () {
+              _onButtonTapped(1);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite, color: Colors.orange),
+            title: Text('Favoritos'),
+            onTap: () {
+              _onButtonTapped(2);
+              Navigator.pop(context);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.settings, color: Colors.grey),
+            title: Text('Configuración'),
+            onTap: () {
+              _onButtonTapped(5);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.help, color: Colors.grey),
+            title: Text('Ayuda'),
+            onTap: () {
+              _onButtonTapped(6);
+              Navigator.pop(context);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.exit_to_app, color: Colors.grey),
+            title: Text('Cerrar sesión'),
+            onTap: () {
+              // Aquí iría la lógica para cerrar sesión
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
     );
   }
