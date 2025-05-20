@@ -1,3 +1,4 @@
+import 'package:bottom/screens/form_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App con Drawer y Botones Deslizables',
+      title: 'App con Drawer, Botones y Formulario',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.grey[100],
@@ -36,36 +37,30 @@ class _MyHomePageState extends State<MyHomePage> {
     'Inicio',
     'Pedidos',
     'Favoritos',
+    'Formulario', //precionar para ver el formulario
     'Cuenta',
     'Más',
     'Config',
-    'Ayuda',
-    'Historial',
-    'Promociones',
   ];
 
   final List<Color> _colors = [
     Colors.blue,
     Colors.red,
     Colors.orange,
-    Colors.green,
+    Colors.green, // Color para el botón del formulario
     Colors.purple,
     Colors.teal,
     Colors.pink,
-    Colors.indigo,
-    Colors.amber,
   ];
 
   final List<Widget> _pages = [
-    Center(child: Text('Página de Inicio', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Página de Inicio, porfa ir al formulario hasta nuevas acualizaciones , completar todos los campos de formulario', style: TextStyle(fontSize: 24))),
     Center(child: Text('Página de Pedidos', style: TextStyle(fontSize: 24))),
     Center(child: Text('Página de Favoritos', style: TextStyle(fontSize: 24))),
+    FormPage(), // Formulario integrado aquí
     Center(child: Text('Página de Cuenta', style: TextStyle(fontSize: 24))),
     Center(child: Text('Página de Más Opciones', style: TextStyle(fontSize: 24))),
     Center(child: Text('Página de Configuración', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Página de Ayuda', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Página de Historial', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Página de Promociones', style: TextStyle(fontSize: 24))),
   ];
 
   void _onButtonTapped(int index) {
@@ -182,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'christopher-jimenez Demo',
+                  'christoopher jimenez Demo',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -190,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Text(
-                  'christopher-D.Jimenez@demo.com',
+                  'jimenez@demo.com',
                   style: TextStyle(
                     // ignore: deprecated_member_use
                     color: Colors.white.withOpacity(0.8),
@@ -201,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ListTile(
             leading: Icon(Icons.home, color: Colors.blue),
-            title: Text('Inicio'),
+            title: Text('Tareas'),
             onTap: () {
               _onButtonTapped(0);
               Navigator.pop(context);
@@ -223,18 +218,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            leading: Icon(Icons.assignment, color: Colors.green),
+            title: Text('Formulario'),
+            onTap: () {
+              _onButtonTapped(3); // Índice del formulario
+              Navigator.pop(context);
+            },
+          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.settings, color: Colors.grey),
             title: Text('Configuración'),
-            onTap: () {
-              _onButtonTapped(5);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.help, color: Colors.grey),
-            title: Text('Ayuda'),
             onTap: () {
               _onButtonTapped(6);
               Navigator.pop(context);
@@ -245,7 +240,6 @@ class _MyHomePageState extends State<MyHomePage> {
             leading: Icon(Icons.exit_to_app, color: Colors.grey),
             title: Text('Cerrar sesión'),
             onTap: () {
-              // Aquí iría la lógica para cerrar sesión
               Navigator.pop(context);
             },
           ),
